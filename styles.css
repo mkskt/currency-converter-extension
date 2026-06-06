@@ -1,0 +1,70 @@
+.currency-converter-tooltip {
+    position: absolute;
+    z-index: 2147483647;
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    pointer-events: auto;
+    border: 1px solid #334155;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.currency-converter-tooltip.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.currency-stack-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 110px;
+}
+
+.currency-stack-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.1s;
+}
+
+.currency-stack-row:hover {
+    background: #1e293b;
+}
+
+.currency-stack-val {
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.currency-stack-code {
+    font-weight: 700;
+    font-size: 11px;
+    color: #38bdf8;
+    background: #1e293b;
+    padding: 1px 6px;
+    border-radius: 4px;
+    transition: background 0.1s;
+    min-width: 38px;
+    text-align: center;
+}
+
+.currency-stack-warning {
+    font-size: 10px;
+    color: #f59e0b;
+    border-top: 1px solid #334155;
+    padding-top: 4px;
+    margin-top: 2px;
+    text-align: center;
+}

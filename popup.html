@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { width: 280px; padding: 12px; font-family: system-ui, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; transition: background 0.2s, color 0.2s; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .header-actions { display: flex; gap: 8px; }
+        h3 { margin: 0; font-size: 15px; color: #334155; }
+        .theme-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; width: auto; margin: 0; display: inline-block; }
+        .theme-btn:hover { transform: scale(1.1); }
+        .search-box { width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; box-sizing: border-box; background: white; color: #0f172a; }
+        .search-box:focus { outline: none; border-color: #2563eb; }
+        .currency-list { max-height: 220px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; background: white; margin-bottom: 10px; }
+        .currency-item { padding: 8px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; color: #0f172a; }
+        .currency-item:hover { background: #f8fafc; }
+        .currency-item.selected { background: #e0f2fe; color: #0369a1; }
+        .currency-code { font-weight: 700; }
+        .currency-name { color: #64748b; font-size: 12px; }
+        .selected .currency-name { color: #0369a1; }
+        .action-btn { width: 100%; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .action-btn:hover { background: #1d4ed8; }
+        .timestamp { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 8px; }
+        .panel { display: none; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+        .info-section { margin-bottom: 14px; }
+        .info-title { font-size: 12px; font-weight: 700; color: #475569; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-text { font-size: 12px; color: #64748b; margin: 0; line-height: 1.5; }
+        .form-group { margin-bottom: 12px; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+        .form-select, .form-textarea { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; box-sizing: border-box; background: white; color: #0f172a; font-family: inherit; }
+        .form-textarea { resize: vertical; height: 60px; }
+        .tutorial-indicator { font-size: 11px; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .tutorial-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .tutorial-buttons-right { display: flex; align-items: center; gap: 12px; }
+        .skip-btn { background: none; border: none; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 0; }
+        .skip-btn:hover { color: #475569; }
+        .secondary-link-container { display: flex; justify-content: center; margin-top: 10px; }
+        .secondary-link { background: none; border: none; color: #2563eb; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 4px; }
+        .secondary-link:hover { color: #1d4ed8; }
+        .secondary-link.gray-link { color: #64748b; }
+        .secondary-link.gray-link:hover { color: #475569; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        body.dark { background: #0f172a; color: #f8fafc; }
+        body.dark h3 { color: #94a3b8; }
+        body.dark .search-box, body.dark .form-select, body.dark .form-textarea { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        body.dark .currency-list { background: #1e293b; border-color: #334155; }
+        body.dark .currency-item { border-bottom-color: #334155; color: #f8fafc; }
+        body.dark .currency-item:hover { background: #334155; }
+        body.dark .currency-item.selected { background: #1e3a8a; color: #38bdf8; }
+        body.dark .currency-name, body.dark .info-title, body.dark .form-label { color: #94a3b8; }
+        body.dark .info-text { color: #cbd5e1; }
+        body.dark .timestamp { color: #475569; }
+        body.dark .tutorial-indicator { color: #60a5fa; }
+        body.dark .skip-btn { color: #94a3b8; }
+        body.dark .skip-btn:hover { color: #cbd5e1; }
+        body.dark .secondary-link { color: #60a5fa; }
+        body.dark .secondary-link:hover { color: #93c5fd; }
+        body.dark .secondary-link.gray-link { color: #94a3b8; }
+        body.dark .secondary-link.gray-link:hover { color: #cbd5e1; }
+        body.dark ::-webkit-scrollbar-track { background: #1e293b; }
+        body.dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h3 id="viewTitle">Target Currencies</h3>
+        <div id="navActions" class="header-actions">
+            <button id="infoToggle" class="theme-btn" title="About Extension">ℹ️</button>
+            <button id="themeToggle" class="theme-btn" title="Toggle Dark Theme">🌙</button>
+            <button id="settingsToggle" class="theme-btn" title="Advanced Settings">⚙️</button>
+        </div>
+    </div>
+
+    <div id="currenciesView">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search and select multiple..." autofocus>
+        <div id="currencyList" class="currency-list"></div>
+        <button id="saveCurrenciesBtn" class="action-btn">Save Preferences</button>
+        <div id="updateTimestamp" class="timestamp"></div>
+    </div>
+
+    <div id="infoView" class="panel">
+        <div class="info-section">
+            <p class="info-title">How to Use</p>
+            <p class="info-text">Simply highlight any price text on a webpage. A tooltip box will overlay tracking rates converted to your target parameters dynamically.</p>
+        </div>
+        <div class="info-section">
+            <p class="info-title">Exchange Rates</p>
+            <p class="info-text">Rates update automatically once every 24 hours via an open API backend cache. If the client drops connection, a local backup storage layer prevents application downtime.</p>
+        </div>
+        <div class="info-section">
+            <p class="info-title">Data Privacy</p>
+            <p class="info-text">This extension functions entirely client-side. No tracking networks, operational analytics, or logging telemetry layers exist. Personal browsing metrics are never collected.</p>
+        </div>
+    </div>
+
+    <div id="settingsView" class="panel">
+        <div class="form-group">
+            <label class="form-label" for="modifierKey">Activation Key</label>
+            <select id="modifierKey" class="form-select">
+                <option value="none">None (Always Show)</option>
+                <option value="ctrl">Control / Command</option>
+                <option value="alt">Alt / Option</option>
+                <option value="shift">Shift</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="blacklistDomains">Website Blacklist</label>
+            <textarea id="blacklistDomains" class="form-textarea" placeholder="example.com&#10;domain.org"></textarea>
+        </div>
+        <button id="saveSettingsBtn" class="action-btn">Save Advanced Settings</button>
+        <div class="secondary-link-container">
+            <button id="restartTutorialBtn" class="secondary-link">Restart Welcome Tour</button>
+        </div>
+    </div>
+
+    <div id="tutorialView" class="panel">
+        <div id="tutorialIndicator" class="tutorial-indicator"></div>
+        <div id="tutorialStepsContainer">
+            <div class="tutorial-step" data-step="0">
+                <p class="info-title">Instant Conversion</p>
+                <p class="info-text">Highlight any price on a website to view standard conversions directly beside your cursor. No manual copy-pasting required.</p>
+            </div>
+            <div class="tutorial-step" data-step="1">
+                <p class="info-title">Click to Copy</p>
+                <p class="info-text">Click any data row inside the hovering webpage overlay. The raw numeric value is copied to your clipboard instantly while the row confirms the action.</p>
+            </div>
+            <div class="tutorial-step" data-step="2">
+                <p class="info-title">Activation Keys</p>
+                <p class="info-text">Avoid overlapping boxes when highlighting text to read. Set an activation key constraint so the conversion engine only triggers when holding Control, Shift, or Alt.</p>
+            </div>
+            <div class="tutorial-step" data-step="3">
+                <p class="info-title">Domain Isolation</p>
+                <p class="info-text">Completely disable operations across custom portals like internal financial work environments or personal email views by adding host names to the advanced blacklist panel.</p>
+            </div>
+        </div>
+        <div class="tutorial-footer">
+            <button id="skipTutorialBtn" class="skip-btn">Skip Tour</button>
+            <div class="tutorial-buttons-right">
+                <button id="backTutorialBtn" class="secondary-link gray-link" style="padding: 4px 0;">Back</button>
+                <button id="nextTutorialBtn" class="action-btn" style="width: auto; padding: 6px 16px;">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

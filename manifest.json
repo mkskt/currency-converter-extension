@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Currency Converter",
+  "version": "1.0",
+  "description": "Converts currency instantly using live exchange rates. Simply highlight a number in any currency and receive an instantaneous conversion to your currency.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://open.er-api.com/"
+  ],
+  "icons": {
+    "16": "curr_exch_ico_16.png",
+    "48": "curr_exch_ico_48.png",
+    "128": "curr_exch_ico_128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "curr_exch_ico_16.png",
+      "48": "curr_exch_ico_48.png",
+      "128": "curr_exch_ico_128.png"
+    }
+  }
+}
