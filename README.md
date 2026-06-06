@@ -19,7 +19,7 @@
 
 Since this is an open-source project, you can install it manually in a few steps:
 
-1.  **Download:** [Download the latest release zip file here](link-to-your-github-release).
+1.  **Download:** [Download the latest release zip file here](https://github.com/mkskt/currency-converter-extension/releases/tag/Major).
 2.  **Extract:** Unzip the folder to a location on your computer.
 3.  **Open Extensions:** Navigate to your browser's extensions page (`chrome://extensions` or `opera://extensions`).
 4.  **Developer Mode:** Toggle **"Developer mode"** in the top right corner.
