@@ -28,7 +28,8 @@
         .form-group { margin-bottom: 12px; }
         .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
         .form-select, .form-textarea { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 13px; box-sizing: border-box; background: white; color: #0f172a; font-family: inherit; }
-        .form-textarea { resize: vertical; height: 60px; }
+        .manage-blacklist-btn { width: 100%; padding: 10px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; transition: background 0.2s; }
+        .manage-blacklist-btn:hover { background: #475569; }
         .tutorial-indicator { font-size: 11px; font-weight: 700; color: #2563eb; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
         .tutorial-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
         .tutorial-buttons-right { display: flex; align-items: center; gap: 12px; }
@@ -44,7 +45,7 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         body.dark { background: #0f172a; color: #f8fafc; }
         body.dark h3 { color: #94a3b8; }
-        body.dark .search-box, body.dark .form-select, body.dark .form-textarea { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        body.dark .search-box, body.dark .form-select { background: #1e293b; border-color: #334155; color: #f8fafc; }
         body.dark .currency-list { background: #1e293b; border-color: #334155; }
         body.dark .currency-item { border-bottom-color: #334155; color: #f8fafc; }
         body.dark .currency-item:hover { background: #334155; }
@@ -61,6 +62,8 @@
         body.dark .secondary-link.gray-link:hover { color: #cbd5e1; }
         body.dark ::-webkit-scrollbar-track { background: #1e293b; }
         body.dark ::-webkit-scrollbar-thumb { background: #475569; }
+        body.dark .manage-blacklist-btn { background: #475569; }
+        body.dark .manage-blacklist-btn:hover { background: #334155; }
     </style>
 </head>
 <body>
@@ -83,11 +86,11 @@
     <div id="infoView" class="panel">
         <div class="info-section">
             <p class="info-title">How to Use</p>
-            <p class="info-text">Simply highlight any price text on a webpage. A tooltip box will overlay tracking rates converted to your target parameters dynamically.</p>
+            <p class="info-text">Simply highlight any price text on a webpage. A tooltip box will overlay tracking rates converted to your target currencies.</p>
         </div>
         <div class="info-section">
             <p class="info-title">Exchange Rates</p>
-            <p class="info-text">Rates update automatically once every 24 hours via an open API backend cache. If the client drops connection, a local backup storage layer prevents application downtime.</p>
+            <p class="info-text">Rates update automatically once every 24 hours.</p>
         </div>
         <div class="info-section">
             <p class="info-title">Data Privacy</p>
@@ -106,8 +109,8 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="form-label" for="blacklistDomains">Website Blacklist</label>
-            <textarea id="blacklistDomains" class="form-textarea" placeholder="example.com&#10;domain.org"></textarea>
+            <label class="form-label">Isolation Parameters</label>
+            <button id="manageBlacklistBtn" class="manage-blacklist-btn">Manage Blacklisted Sites 🚫</button>
         </div>
         <button id="saveSettingsBtn" class="action-btn">Save Advanced Settings</button>
         <div class="secondary-link-container">
@@ -120,19 +123,19 @@
         <div id="tutorialStepsContainer">
             <div class="tutorial-step" data-step="0">
                 <p class="info-title">Instant Conversion</p>
-                <p class="info-text">Highlight any price on a website to view standard conversions directly beside your cursor. No manual copy-pasting required.</p>
+                <p class="info-text">Highlight any price on a website to view conversions directly beside your cursor.</p>
             </div>
             <div class="tutorial-step" data-step="1">
                 <p class="info-title">Click to Copy</p>
-                <p class="info-text">Click any data row inside the hovering webpage overlay. The raw numeric value is copied to your clipboard instantly while the row confirms the action.</p>
+                <p class="info-text">Click any row inside the hovering tooltip to copy its value.</p>
             </div>
             <div class="tutorial-step" data-step="2">
                 <p class="info-title">Activation Keys</p>
-                <p class="info-text">Avoid overlapping boxes when highlighting text to read. Set an activation key constraint so the conversion engine only triggers when holding Control, Shift, or Alt.</p>
+                <p class="info-text">Configure an activation key so that conversions only appear when you want them to. After setting it up, simply hold down set key while highlighting.</p>
             </div>
             <div class="tutorial-step" data-step="3">
-                <p class="info-title">Domain Isolation</p>
-                <p class="info-text">Completely disable operations across custom portals like internal financial work environments or personal email views by adding host names to the advanced blacklist panel.</p>
+                <p class="info-title">Blacklist</p>
+                <p class="info-text">Don't want to see any conversions on certain websites? Simply add them to the blacklist.</p>
             </div>
         </div>
         <div class="tutorial-footer">

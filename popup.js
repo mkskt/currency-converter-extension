@@ -26,7 +26,7 @@ const currencies = {
     "SCR": "Seychellois Rupee", "SDG": "Sudanese Pound", "SEK": "Swedish Krona", "SGD": "Singapore Dollar", "SHP": "Saint Helena Pound", 
     "SLE": "Sierra Leonean Leone", "SOS": "Somali Shilling", "SRD": "Surinamese Dollar", "SSP": "South Sudanese Pound", "STN": "São Tomé Dobra", 
     "SYP": "Syrian Pound", "SZL": "Eswatini Lilangeni", "THB": "Thai Baht", "TJS": "Tajikistani Somoni", "TMT": "Turkmenistan Manat", 
-    "TND": "Tunisian Dinar", "TOP": "Tongan Paʻanga", "TRY": "Turkish Lira", "TTD": "Trinidad Dollar", "TVD": "Tuvaluan Dollar", 
+    "TND": "Turnisian Dinar", "TOP": "Tongan Paʻanga", "TRY": "Turkish Lira", "TTD": "Trinidad Dollar", "TVD": "Tuvaluan Dollar", 
     "TWD": "New Taiwan Dollar", "TZS": "Tanzanian Shilling", "UAH": "Ukrainian Hryvnia", "UGX": "Ugandan Shilling", "USD": "United States Dollar", 
     "UYU": "Uruguayan Peso", "UZS": "Uzbekistani Som", "VES": "Venezuelan Bolívar", "VND": "Vietnamese Đồng", "VUV": "Vanuatu Vatu", 
     "WST": "Samoan Tala", "XAF": "Central African CFA", "XCD": "East Caribbean Dollar", "XDR": "Special Drawing Rights", "XOF": "West African CFA", 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialView = document.getElementById('tutorialView');
     
     const modifierKeySelect = document.getElementById('modifierKey');
-    const blacklistTextarea = document.getElementById('blacklistDomains');
+    const manageBlacklistBtn = document.getElementById('manageBlacklistBtn');
     const restartTutorialBtn = document.getElementById('restartTutorialBtn');
     
     const backTutorialBtn = document.getElementById('backTutorialBtn');
@@ -73,13 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
         targetCurrencies: ["EUR"], 
         theme: "light",
         modifierKey: "none",
-        blacklist: "",
+        blacklist: [],
         onboarded: false,
         lastUpdated: new Date().toLocaleString()
     }, (data) => {
         selectedCurrencies = data.targetCurrencies;
         modifierKeySelect.value = data.modifierKey;
-        blacklistTextarea.value = data.blacklist;
         updateTimestamp.innerText = `Rates updated: ${data.lastUpdated}`;
         
         if (data.theme === 'dark') {
@@ -130,6 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
     infoToggle.addEventListener('click', () => switchView('info'));
     settingsToggle.addEventListener('click', () => switchView('settings'));
     restartTutorialBtn.addEventListener('click', () => launchOnboarding());
+
+    manageBlacklistBtn.addEventListener('click', () => {
+        chrome.tabs.create({ url: 'blacklist.html' });
+    });
 
     function launchOnboarding() {
         currentView = "tutorial";
@@ -249,8 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveSettingsBtn.addEventListener('click', () => {
         chrome.storage.sync.set({
-            modifierKey: modifierKeySelect.value,
-            blacklist: blacklistTextarea.value
+            modifierKey: modifierKeySelect.value
         }, () => {
             saveSettingsBtn.innerText = "Settings Saved";
             saveSettingsBtn.style.background = "#16a34a"; 

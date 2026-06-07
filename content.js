@@ -69,13 +69,16 @@ document.addEventListener('mouseup', (e) => {
         const currentHost = window.location.hostname.toLowerCase();
         const currentUrl = window.location.href.toLowerCase();
 
-        chrome.storage.sync.get({targetCurrencies: ['EUR'], modifierKey: 'none', blacklist: ''}, (settings) => {
+        chrome.storage.sync.get({targetCurrencies: ['EUR'], modifierKey: 'none', blacklist: []}, (settings) => {
             if (settings.modifierKey === 'ctrl' && !e.ctrlKey) return;
             if (settings.modifierKey === 'alt' && !e.altKey) return;
             if (settings.modifierKey === 'shift' && !e.shiftKey) return;
 
             if (settings.blacklist) {
-                const entries = settings.blacklist.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean);
+                // Read array chips cleanly; migrate string split seamlessly if old configuration structure exists
+                const entries = Array.isArray(settings.blacklist)
+                    ? settings.blacklist.map(d => d.trim().toLowerCase()).filter(Boolean)
+                    : settings.blacklist.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean);
                 
                 const isBlocked = entries.some(entry => {
                     if (entry.startsWith('http://') || entry.startsWith('https://')) {
