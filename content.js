@@ -75,7 +75,6 @@ document.addEventListener('mouseup', (e) => {
             if (settings.modifierKey === 'shift' && !e.shiftKey) return;
 
             if (settings.blacklist) {
-                // Read array chips cleanly; migrate string split seamlessly if old configuration structure exists
                 const entries = Array.isArray(settings.blacklist)
                     ? settings.blacklist.map(d => d.trim().toLowerCase()).filter(Boolean)
                     : settings.blacklist.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean);
@@ -132,8 +131,11 @@ document.addEventListener('mouseup', (e) => {
 
                 if (convertedCount === 0) return;
 
+                // FIXED: Check against time-zone safe calculation from background/sync cache layers
                 const ONE_DAY = 24 * 60 * 60 * 1000;
-                if (localData.lastUpdated && (Date.now() - localData.lastUpdated > ONE_DAY)) {
+                const ratesAreExpired = localData.lastUpdated ? (Date.now() - Number(localData.lastUpdated) > ONE_DAY) : false;
+                
+                if (ratesAreExpired) {
                     outputHTML += `<div class="currency-stack-warning">⚠️ Outdated rates</div>`;
                 }
 
